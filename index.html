@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Special Gift - aptertwo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: #06050a;
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Background Gradasi Gelap */
+        .bg-gradient {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            background: radial-gradient(circle at center, #131022 0%, #06050a 100%);
+        }
+
+        /* Efek Hati Berterbangan Naik ke Atas (Floating Hearts) */
+        .heart-particle {
+            position: absolute;
+            bottom: -20px;
+            color: rgba(255, 105, 180, 0.6);
+            font-size: 14px;
+            pointer-events: none;
+            z-index: 2;
+            animation: floatUp 6s linear infinite;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) translateX(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% { opacity: 0.8; }
+            90% { opacity: 0.8; }
+            100% {
+                transform: translateY(-105vh) translateX(var(--randomX)) rotate(var(--randomRotate));
+                opacity: 0;
+            }
+        }
+
+        /* PENGUNCI LAYOUT: Membuat frame HP di tengah layar laptop, otomatis full screen di HP */
+        .phone-container {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 414px;
+            height: 100vh;
+            max-height: 850px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 50px 25px 40px 25px;
+            background: rgba(6, 5, 10, 0.4);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 30px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+        }
+
+        @media (max-width: 450px) {
+            .phone-container {
+                max-height: 100vh;
+                border-radius: 0;
+                border: none;
+                background: transparent;
+                padding: 45px 20px 35px 20px;
+            }
+        }
+
+        .page {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            width: 100%;
+            animation: fadeEffect 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        .page.active {
+            display: flex;
+        }
+
+        @keyframes fadeEffect {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ================= PAGE 1 ================= */
+        .main-title {
+            font-family: 'Alex Brush', cursive;
+            font-size: 3.8rem;
+            color: #fbc7d4;
+            text-shadow: 0 0 20px rgba(251,199,212,0.3);
+            text-align: center;
+            margin-bottom: 5px;
+        }
+
+        .sub-title {
+            font-size: 0.75rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: #a19eb0;
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        /* FIX UTAMA: Mawar Putih Line Art Eksklusif dengan Gabungan Animasi Swing & Pulse Glow */
+        .rose-icon {
+            width: 110px;
+            height: 110px;
+            color: #ffffff; /* Putih bersih estetik */
+            margin-bottom: 45px;
+            display: inline-block;
+            animation: roseMasterAnimation 4s ease-in-out infinite;
+        }
+
+        .rose-icon svg {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        @keyframes roseMasterAnimation {
+            0%, 100% {
+                transform: scale(1) rotate(-4deg);
+                filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.2));
+            }
+            50% {
+                transform: scale(1.06) rotate(4deg);
+                filter: drop-shadow(0 0 25px rgba(255, 255, 255, 0.5));
+            }
+        }
+
+        /* ================= PAGE 2 ================= */
+        .letter-box {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 20px;
+            padding: 25px 20px;
+            backdrop-filter: blur(15px);
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+
+        .letter-box::-webkit-scrollbar {
+            width: 0px;
+        }
+
+        .typing-text {
+            font-size: 0.92rem;
+            line-height: 1.75;
+            color: #e2e0eb;
+            white-space: pre-wrap;
+            text-align: left;
+        }
+
+        /* ================= PAGE 3 ================= */
+        .gallery-header {
+            font-size: 0.85rem;
+            letter-spacing: 4px;
+            color: #fbc7d4;
+            text-transform: uppercase;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .photo-slider {
+            width: 100%;
+            display: flex;
+            gap: 20px;
+            overflow-x: auto;
+            padding: 10px 5px 25px 5px;
+            scroll-snap-type: x mandatory;
+            scrollbar-width: none;
+        }
+
+        .photo-slider::-webkit-scrollbar {
+            display: none;
+        }
+
+        .photo-item {
+            flex: 0 0 85%;
+            scroll-snap-align: center;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.5);
+            aspect-ratio: 3 / 4;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .photo-item:active, .photo-item:hover {
+            transform: scale(1.03);
+            box-shadow: 0 18px 35px rgba(255, 105, 180, 0.15);
+        }
+
+        .photo-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .gallery-caption {
+            font-size: 0.8rem;
+            color: #a19eb0;
+            margin-top: 10px;
+            font-style: italic;
+            text-align: center;
+            letter-spacing: 0.5px;
+        }
+
+        /* ================= PAGE 4 ================= */
+        .final-love-text {
+            font-size: 2.2rem;
+            font-weight: 600;
+            letter-spacing: 6px;
+            color: #ffffff;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .heart-divider {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+
+        .horizontal-line {
+            width: 70px;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        .beating-heart {
+            font-size: 3.2rem;
+            color: #ff3366;
+            margin: 0 20px;
+            animation: heartBeat 1.3s infinite cubic-bezier(0.215, 0.610, 0.355, 1);
+        }
+
+        @keyframes heartBeat {
+            0% { transform: scale(1); }
+            25% { transform: scale(1.12); filter: drop-shadow(0 0 15px rgba(255,51,102,0.6)); }
+            40% { transform: scale(1); }
+            55% { transform: scale(1.08); filter: drop-shadow(0 0 10px rgba(255,51,102,0.4)); }
+            100% { transform: scale(1); }
+        }
+
+        /* ================= BUTTON SYSTEM ================= */
+        .bottom-nav {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            padding-top: 10px;
+        }
+
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.02);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            padding: 13px 45px;
+            border-radius: 30px;
+            font-size: 0.78rem;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .nav-btn:hover {
+            background: #ffffff;
+            color: #06050a;
+            border-color: #ffffff;
+            box-shadow: 0 0 20px rgba(255,255,255,0.3);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-gradient"></div>
+
+    <div class="phone-container">
+        
+        <div class="page active" id="p1">
+            <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                <h1 class="main-title">Special Gift</h1>
+                <p class="sub-title">To Someone Special In My Life ✨</p>
+                
+                <div class="rose-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 19V22" />
+                        <path d="M12 7.5C11.5 6 10 4.5 8.5 5C6.5 5.7 6 8 8 10.5C9.5 12.5 11 14 12 15C13 14 14.5 12.5 16 10.5C18 8 17.5 5.7 15.5 5C14 4.5 12.5 6 12 7.5Z" />
+                        <path d="M12 7.5C12 6.2 12.8 4.8 14 4C12.8 3.2 11.2 3.2 10 4C11.2 4.8 12 6.2 12 7.5Z" />
+                        <path d="M9.5 12C8 13 6.5 12.5 6 11C6.5 10 8 10 9.5 10.5" />
+                        <path d="M14.5 12C16 13 17.5 12.5 18 11C17.5 10 16 10 14.5 10.5" />
+                        <path d="M12 15C10.5 16.5 8 16.5 7.5 15" />
+                        <path d="M12 15C13.5 16.5 16 16.5 16.5 15" />
+                        <path d="M12 11V14" />
+                    </svg>
+                </div>
+            </div>
+            <div class="bottom-nav">
+                <button class="nav-btn" onclick="goToPage(1, 2); triggerTyping();">Open Letter</button>
+            </div>
+        </div>
+
+        <div class="page" id="p2">
+            <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; width: 100%;">
+                <div class="letter-box">
+                    <div class="typing-text" id="outputLetter"></div>
+                </div>
+            </div>
+            <div class="bottom-nav">
+                <button class="nav-btn" id="nextBtnLetter" style="opacity: 0; pointer-events: none;" onclick="goToPage(2, 3)">Next ➔</button>
+            </div>
+        </div>
+
+        <div class="page" id="p3">
+            <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%;">
+                <h2 class="gallery-header">💟 Our Memories</h2>
+                <div class="photo-slider">
+                    <div class="photo-item">
+                        <img src="foto1.jpeg" alt="Memory 1">
+                    </div>
+                    <div class="photo-item">
+                        <img src="foto2.jpeg" alt="Memory 2">
+                    </div>
+                    <div class="photo-item">
+                        <img src="foto3.jpeg" alt="Memory 3">
+                    </div>
+                </div>
+                <p class="gallery-caption">Have a wonderful day! You're always amazing.</p>
+            </div>
+            <div class="bottom-nav">
+                <button class="nav-btn" onclick="goToPage(3, 4)">Next ➔</button>
+            </div>
+        </div>
+
+        <div class="page" id="p4">
+            <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%;">
+                <h1 class="final-love-text">I LOVE YOU</h1>
+                <div class="heart-divider">
+                    <div class="horizontal-line"></div>
+                    <div class="beating-heart">❤️</div>
+                    <div class="horizontal-line"></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function createFloatingHearts() {
+            const body = document.body;
+            setInterval(() => {
+                const heart = document.createElement('div');
+                heart.innerHTML = '❤️';
+                heart.classList.add('heart-particle');
+                
+                heart.style.left = Math.random() * 100 + 'vw';
+                
+                const randomX = (Math.random() * 200 - 100) + 'px';
+                const randomRotate = (Math.random() * 360) + 'deg';
+                heart.style.setProperty('--randomX', randomX);
+                heart.style.setProperty('--randomRotate', randomRotate);
+                
+                const size = Math.random() * 10 + 10;
+                heart.style.fontSize = size + 'px';
+                heart.style.animationDuration = (Math.random() * 3 + 4) + 's';
+                
+                body.appendChild(heart);
+                
+                setTimeout(() => {
+                    heart.remove();
+                }, 6000);
+            }, 400);
+        }
+        createFloatingHearts();
+
+        function goToPage(curr, next) {
+            document.getElementById(`p${curr}`).classList.remove('active');
+            document.getElementById(`p${next}`).classList.add('active');
+        }
+
+        const textSurat = "Thank you for being such a strong and amazing person. I'm really proud of you. You've done so well until this very moment, chasing your dreams and fighting your own battles with grace. You always keep trying to stay on your own path and pursue what matters most. You never give up, even when deep down you're actually so tired.\n\nI truly believe that one day, you'll look back at all of this and smile proudly because you made it through every hard moment and every part of the process.\n\nNever forget to be grateful for how far you've come, and keep moving forward with a happy heart. May your days be filled with beautiful blessings and endless joy. Keep shining, beautiful soul...✨";
+        
+        let charPointer = 0;
+        function triggerTyping() {
+            const displayBox = document.getElementById('outputLetter');
+            function type() {
+                if (charPointer < textSurat.length) {
+                    displayBox.innerHTML += textSurat.charAt(charPointer);
+                    charPointer++;
+                    setTimeout(type, 35);
+                } else {
+                    const btn = document.getElementById('nextBtnLetter');
+                    btn.style.pointerEvents = 'auto';
+                    btn.style.opacity = '1';
+                    btn.style.transition = 'opacity 0.4s ease';
+                }
+            }
+            type();
+        }
+    </script>
+</body>
+</html>
